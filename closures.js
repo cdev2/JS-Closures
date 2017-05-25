@@ -8,18 +8,18 @@ function outer() {
     return 'The original name was ' + name;
   }
 }
-
+var inner = outer();
 /****** INSTRUCTIONS PROBLEM 1 ******/
 /* Above you're given a function that returns another function which has a
 closure over the name variable. Invoke outer saving the return value into
 another variable called 'inner'. */
 
 // Code Here
-
+var inner = outer();
 //Once you do that, invoke inner.
 
 //Code Here
-
+inner()
 
 
 
@@ -47,8 +47,11 @@ Create a callJake function that when invoked with '435-555-9248' returns 'Callin
 in your console. */
 
   //Code Here
+var callJake = callFriend('Jake')
 
-
+// console.log("callJake: ", callJake)
+// console.log("Calling: ", callJake(2))
+// console.log("Calling again: ", callJake(3))
 
 
 
@@ -66,12 +69,17 @@ properly. */
 
 //Code Here
 
+function makeCounter(){
+  var counter = 0;
+  return function(){return counter += 1;}
+}
+
 //Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
+  var count = makeCounter();
+   count(); // 1
+   count(); // 2
+   count(); // 3
+   count(); // 4
 
 
 
@@ -98,12 +106,20 @@ http://stackoverflow.com/questions/17776940/javascript-module-pattern-with-examp
 
 function counterFactory(value) {
 
-  // Code here.
-
-
+  // Code here
+var counter = value
   return {
+    inc: function() {
+       counter++
+      return counter
+    },
+   dec: function(){
+     counter = counter - 1
+      return counter;
+   }
   }
 }
+
 
 
 counter = counterFactory(10);
@@ -132,12 +148,14 @@ will return 'You're doing awesome, keep it up firstname lastname.' */
 function motivation(firstname, lastname) {
 
   var welcomeText = 'You\'re doing awesome, keep it up ';
-
+function message(){
+return (welcomeText +  firstname +" " + lastname + ".");
+}
   // code message function here.
 
 
   //Uncommment this to return the value of your invoked message function
-  //return message();
+  return message();
 
 }
 
@@ -176,6 +194,9 @@ var module = (function() {
   // outside our lexical scope
   return {
     // Code here.
+    publicMethod: function(){
+      return privateMethod();
+    }
   };
 
 })();
@@ -195,8 +216,11 @@ var secondLevelFriends = ["Anne", "Harry", "Quinton"];
 var allUsers = ["Tom", "Dick", "Harry", "Anne", "Quinton", "Katie", "Mary"];
 
 function findPotentialFriends(existingFriends) {
+  return function(key) {
+    return(!existingFriends.includes(key)) }
+  }
 
-}
+
 
 var isNotAFriend = findPotentialFriends( friends );
 // isNotAFriend(allUsers[0]); // false
@@ -210,8 +234,23 @@ var isNotAFriend = findPotentialFriends( friends );
 method, find all potential second level friends as well as potential friends
 from allUsers. */
 
-var potentialSecondLevelFriends = "?";
-var allPotentialFriends = "?";
+var potentialSecondLevelFriends = secondLevelFriends.filter(function(thePerson, arrayToCheck) {
+  return isNotAFriend(thePerson)
+});
+var allPotentialFriends = allUsers.filter(function(thePerson, arrayToCheck) {
+  return isNotAFriend(thePerson)
+});
+
+function timeOutCounter() {
+  for (var i = 0; i <= 5; i++) {
+    (function(something) {
+      setTimeout(function(){
+        console.log(something)
+      },something * 1000)
+      })(1)
+  }
+}
+timeOutCounter();
 
 
 /******************************************************************************\
@@ -236,6 +275,7 @@ to 5. What we need to do is console.log(i) so that it logs like so:
 
 function timeOutCounter() {
   for (var i = 0; i <= 5; i++) {
+    var temp
     setTimeout(function() {
     	console.log(i)
 	}, i * 1000)
